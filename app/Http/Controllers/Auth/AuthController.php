@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Expert;
 use App\Models\User;
 use App\Models\Calendar;
+use App\Models\Consultation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -48,12 +49,6 @@ class AuthController extends Controller
                     'is_user'=>$is_user,
                     ]);
                     if(!$user->is_user) {
-                        //  $user->expert()->create([
-                        //     'user_id'=>$user->id,
-                        //     'image'=> $request->image,
-                        //     'description'=> $request->description,
-                        //     'address'=> $request->address
-                        // ]);
                     $expert=Expert::create([
                         'user_id'=>$user->id,
                         'image'=> $request->image,
@@ -67,12 +62,22 @@ class AuthController extends Controller
                 'starting_time'=> $request->starting,
                 'ending_time'=> $request->ending,
             ]); }
+            $names=Consultation::all();
+            foreach($request->consultation as $consul) {
+                $expert->consultations()->attach($names->where('name',$consul));    
                     }
+                    return response()->json([
+                        'status'=>true,
+                        'message'=>'expert created successfully',
+                        'token'=>$user->createToken('Api Token')->plainTextToken,
+                    ],200);
+                        }
+                        else {
                 return response()->json([
                     'status'=>true,
                     'message'=>'User created successfully',
                     'token'=>$user->createToken('Api Token')->plainTextToken,
-                ],200);
+                ],200); }
             }
             catch(\Throwable $th) {
                 return response()->json([
@@ -81,7 +86,8 @@ class AuthController extends Controller
                 ],500);
             }
     }
-
+  
+    
     function login(Request $request)
     {
         try {
