@@ -25,6 +25,9 @@ protected $fillable = [
 public function calendar() {
     return $this->hasMany(Calendar::class);
 }
-
+public function consultations()
+{
+   return $this->belongsToMany(Consultation::class);
 }
 
+}
