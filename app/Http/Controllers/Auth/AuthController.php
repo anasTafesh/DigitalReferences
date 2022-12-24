@@ -60,13 +60,13 @@ class AuthController extends Controller
                         'description'=> $request->description,
                         'address'=> $request->address
                     ]);
+                    foreach($request->day as $day){
             $expert->calendar()->create([
                 'expert_id'=>$expert->id,
-                'week_num'=>1,
-                'day'=> ,
-                'starting_time'=> '2',
-                'ending_time'=> '4',
-            ]);
+                'day'=> $day,
+                'starting_time'=> $request->starting,
+                'ending_time'=> $request->ending,
+            ]); }
                     }
                 return response()->json([
                     'status'=>true,
@@ -81,51 +81,7 @@ class AuthController extends Controller
                 ],500);
             }
     }
-    /*
-     function create_expert(Request $request)
-        {
-            try
-            {
-                $validateExpert= Validator::make($request->all(),
-                    [
-                        'name' => ['required', 'string', 'max:255'],
-                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                        'password' => ['required', 'string', 'min:8',],
-                        'phone_number' => ['required', 'numeric',],
-                        'address'=>['string','max:255']
-                    ]);
-                if($validateUser->fails()) {
-                    return response()->json([
-                        'status'=>false,
-                        'message'=>'validation error',
-                        ''=>$validateUser->errors(),
-                    ],401);
-                }
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'phone_number'=>$request->phone_number,
-                    'is_user'=>1,
-                    ]);
-                return response()->json([
-                    'status'=>true,
-                    'message'=>'User created successfully',
-                    'token'=>$user->createToken('Api Token')->plainTextToken,
-                ],200);
-            }
-            catch(\Throwable $th) {
-                return response()->json([
-                   'status'=>false,
-                   'message'=>$th->getMessage()
-                ],500);
-            }
-    }
-     */
-    /*function get_user(Request $request)
-    {
-        return $request->user();
-    }*/
+
     function login(Request $request)
     {
         try {
