@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('expert_id')->constrained('experts');
             $table->integer('week_num')->nullable();
-            $table->json('day')->nullable();
+            $table->string('day')->nullable();
             $table->string('starting_time')->nullable();
             $table->string('ending_time')->nullable();
             $table->timestamps();
